@@ -6,10 +6,23 @@ print("Start sentence with '=' to change to strict set\n\
 Start a sentence with '$' or '$=' to add diacritics\n\
 Type ':q' to quit")
 
-decisions = [True, False, False] # 1/3 times it will use a diacritic
+decisions = [True, False] # 
 
 def random_decision():
     return random.choice(decisions)
+
+while True:
+    profanity_check = input("Do you want to have profanity check on? (must have 'profanity-check' installed) [Y/n]: ")
+
+    if profanity_check == "" or profanity_check.lower() == "y" or profanity_check.lower() == "yes":
+        print("Turning profanity check on...")
+        profanity_check_mode = True
+        from profanity_check import predict, predict_prob
+        break
+    elif profanity_check.lower() == "n" or profanity_check.lower() == "no":
+        print("No profanity check selected")
+        profanity_check_mode = False
+        break
 
 while True:
     sentence = input("\n>> ")
@@ -48,6 +61,15 @@ while True:
         else:
             result += letter
     
-    print(result)
+    print(f"\n{result}")
+    if profanity_check_mode:
+        if predict([result]) == [0]:
+            prediction = "No"
+        elif predict([result]) == [1]:
+            prediction = "Yes"
+        else:
+            print("error")
+        print(f"Profanity detected: {prediction}")
+        print(f"Profanity percentage: {predict_prob([result])[0]*100:.2f}%")
 
 print("\nGoodbye!")
