@@ -63,13 +63,23 @@ while True:
     
     print(f"\n{result}")
     if profanity_check_mode:
-        if predict([result]) == [0]:
-            prediction = "No"
-        elif predict([result]) == [1]:
-            prediction = "Yes"
+        if predict([sentence]) == [0]:
+            sentence_prediction = "No"
+        elif predict([sentence]) == [1]:
+            sentence_prediction = "Yes"
         else:
             print("error")
-        print(f"Profanity detected: {prediction}")
-        print(f"Profanity percentage: {predict_prob([result])[0]*100:.2f}%")
+
+        if predict([result]) == [0]:
+            result_prediction = "No"
+        elif predict([result]) == [1]:
+            result_prediction = "Yes"
+        else:
+            print("error")
+
+        print(f"[Original] Profanity detected: {sentence_prediction}")
+        print(f"[New] Profanity detected: {result_prediction}")
+        print(f"[Original] Profanity percentage: {predict_prob([sentence])[0]*100:.2f}%")
+        print(f"[New] Profanity percentage: {predict_prob([result])[0]*100:.2f}%")
 
 print("\nGoodbye!")
